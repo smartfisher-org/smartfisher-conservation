@@ -8,12 +8,14 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
-    <div className="flex min-h-screen w-full bg-background">
-      <AppSidebar />
+    <div className="flex h-screen w-full bg-background overflow-hidden">
+      <div className="flex-shrink-0">
+        <AppSidebar />
+      </div>
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top Header */}
-        <header className="h-14 flex items-center justify-between px-6 border-b bg-card shadow-surface">
+        <header className="h-14 flex items-center justify-between px-6 border-b bg-card shadow-surface flex-shrink-0">
           <div className="flex items-center gap-3">
             <SidebarTrigger className="text-primary hover:bg-primary/10" />
             <div className="flex items-center gap-2">
