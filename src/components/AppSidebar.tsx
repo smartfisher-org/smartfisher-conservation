@@ -17,95 +17,107 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 import smartfisherLogo from "@/assets/smartfisher-logo.png";
 
-const mainNavItems = [
-  { title: "Dashboard", url: "/dashboard", icon: Home },
-  { title: "Camera View", url: "/camera", icon: Camera },
-  { title: "Map", url: "/map", icon: Map },
-  { title: "Data Upload", url: "/upload", icon: Upload },
+const navigation = [
+  { name: "Dashboard", href: "/dashboard", icon: Home },
+  { name: "Camera View", href: "/camera", icon: Camera },
+  { name: "Map", href: "/map", icon: Map },
+  { name: "Data Upload", href: "/upload", icon: Upload },
 ];
 
-const bottomNavItems = [
-  { title: "Settings", url: "/settings", icon: Settings },
-  { title: "Back to Website", url: "/", icon: ExternalLink },
+const bottomNavigation = [
+  { name: "Settings", href: "/settings", icon: Settings },
 ];
 
 export default function AppSidebar() {
-  const { state } = useSidebar();
   const location = useLocation();
   
   const isActive = (path: string) => 
     location.pathname === path || (path === "/dashboard" && location.pathname === "/");
 
   return (
-    <Sidebar className="w-64 bg-white border-r border-border" collapsible="none">
-      <SidebarContent className="bg-white flex flex-col h-full">
+    <Sidebar className="bg-background border-r border-border w-64 h-screen sticky top-0 flex flex-col" collapsible="none">
+      <SidebarContent className="flex flex-col h-full">
         {/* Logo Section */}
-        <div className="flex flex-col items-center py-8 px-4 border-b border-border">
-          <div className="w-32 h-32 mb-4">
+        <div className="p-4 border-b border-border flex flex-col items-center">
+          <div className="w-24 h-24 mb-3">
             <img 
               src={smartfisherLogo} 
               alt="SmartFISHER Logo" 
               className="w-full h-full object-contain"
             />
           </div>
-          <h1 className="text-xl font-bold text-foreground">SmartFISHER</h1>
+          <h1 className="text-lg font-bold text-foreground">SmartFISHER</h1>
         </div>
 
         {/* Main Navigation Menu */}
-        <SidebarGroup className="flex-1 px-4 py-6">
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
-              {mainNavItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={item.url} 
-                      className={({ isActive: navIsActive }) => 
-                        `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                          navIsActive || isActive(item.url)
-                            ? "bg-primary text-primary-foreground font-medium" 
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                        }`
-                      }
-                    >
-                      <item.icon className="h-5 w-5" />
-                      <span className="text-sm">{item.title}</span>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <nav className="p-4 space-y-2 flex-1 overflow-y-auto">
+          <SidebarMenu>
+            {navigation.map((item) => (
+              <SidebarMenuItem key={item.name}>
+                <SidebarMenuButton asChild>
+                  <NavLink 
+                    to={item.href} 
+                    className={({ isActive: navIsActive }) => 
+                      cn(
+                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                        navIsActive || isActive(item.href)
+                          ? "bg-primary text-primary-foreground shadow-sm" 
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                      )
+                    }
+                  >
+                    <item.icon className="w-4 h-4" />
+                    {item.name}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </nav>
 
         {/* Bottom Navigation Menu */}
-        <SidebarGroup className="px-4 py-4 border-t border-border">
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
-              {bottomNavItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={item.url} 
-                      className={({ isActive: navIsActive }) => 
-                        `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                          navIsActive || isActive(item.url)
-                            ? "bg-primary text-primary-foreground font-medium" 
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                        }`
-                      }
-                    >
-                      <item.icon className="h-5 w-5" />
-                      <span className="text-sm">{item.title}</span>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <div className="p-4 pt-0 space-y-2">
+          <SidebarMenu>
+            {bottomNavigation.map((item) => (
+              <SidebarMenuItem key={item.name}>
+                <SidebarMenuButton asChild>
+                  <NavLink 
+                    to={item.href} 
+                    className={({ isActive: navIsActive }) => 
+                      cn(
+                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                        navIsActive || isActive(item.href)
+                          ? "bg-primary text-primary-foreground shadow-sm" 
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                      )
+                    }
+                  >
+                    <item.icon className="w-4 h-4" />
+                    {item.name}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+            
+            {/* Back to Website Link */}
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <a
+                  href="https://smartfisher.pt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-accent"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Back to Website
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </div>
       </SidebarContent>
     </Sidebar>
   );
