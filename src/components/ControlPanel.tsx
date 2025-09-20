@@ -1,37 +1,37 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { format } from "date-fns";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { 
-  Settings, 
-  Filter, 
-  Search, 
   RefreshCw, 
   Download,
-  Calendar,
-  MapPin
+  Calendar as CalendarIcon
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
 export default function ControlPanel() {
-  const [filters, setFilters] = useState({
-    location: 'all',
-    timePeriod: '7d',
-    confidence: 'high',
-    speciesType: 'all'
+  const [location, setLocation] = useState("all");
+  const [timePeriod, setTimePeriod] = useState("18d");
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined;
+    to: Date | undefined;
+  }>({
+    from: new Date(2025, 0, 1), // Jan 01, 2025
+    to: new Date(2025, 0, 18),  // Jan 18, 2025
   });
 
-  const [activeFilters, setActiveFilters] = useState(['location', 'confidence']);
-
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
-  const handleSeeResults = () => {
+  const handleRefresh = () => {
     toast({
-      title: "Applying Filters",
-      description: "Updating dashboard with selected criteria...",
+      title: "Refreshing Data",
+      description: "Updating dashboard with latest information...",
     });
   };
 
@@ -42,42 +42,25 @@ export default function ControlPanel() {
     });
   };
 
-  const clearFilters = () => {
-    setFilters({
-      location: 'all',
-      timePeriod: '7d', 
-      confidence: 'all',
-      speciesType: 'all'
-    });
-    setActiveFilters([]);
+  const formatDateRange = () => {
+    if (!dateRange.from || !dateRange.to) return "Select date range";
+    return `${format(dateRange.from, "MMM dd, yyyy")} - ${format(dateRange.to, "MMM dd, yyyy")}`;
   };
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Settings className="h-5 w-5" />
-          Control Panel
-        </CardTitle>
-        <CardDescription>
-          Configure filters and data parameters
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {/* Filter Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
+      <CardContent className="pt-6">
+        <div className="flex items-center justify-between gap-6">
+          {/* Left side - Filter controls */}
+          <div className="flex items-center gap-6 flex-1">
+            {/* Location */}
+            <div className="space-y-2 min-w-[200px]">
+              <label className="text-sm font-medium text-foreground">
                 Location
               </label>
-              <Select
-                value={filters.location}
-                onValueChange={(value) => handleFilterChange('location', value)}
-              >
+              <Select value={location} onValueChange={setLocation}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select location" />
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Locations</SelectItem>
@@ -88,19 +71,49 @@ export default function ControlPanel() {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-1">
-                <Calendar className="h-3 w-3" />
+            {/* Date Range */}
+            <div className="space-y-2 min-w-[280px]">
+              <label className="text-sm font-medium text-foreground">
+                Date Range
+              </label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !dateRange.from && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formatDateRange()}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    initialFocus
+                    mode="range"
+                    defaultMonth={dateRange.from}
+                    selected={dateRange}
+                    onSelect={(range) => setDateRange({ from: range?.from, to: range?.to })}
+                    numberOfMonths={2}
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            {/* Time Period */}
+            <div className="space-y-2 min-w-[200px]">
+              <label className="text-sm font-medium text-foreground">
                 Time Period
               </label>
-              <Select
-                value={filters.timePeriod}
-                onValueChange={(value) => handleFilterChange('timePeriod', value)}
-              >
+              <Select value={timePeriod} onValueChange={setTimePeriod}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select period" />
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="18d">All Data (18 Days)</SelectItem>
                   <SelectItem value="24h">Last 24 Hours</SelectItem>
                   <SelectItem value="7d">Last 7 Days</SelectItem>
                   <SelectItem value="30d">Last 30 Days</SelectItem>
@@ -109,76 +122,20 @@ export default function ControlPanel() {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-1">
-                <Search className="h-3 w-3" />
-                Confidence
-              </label>
-              <Select
-                value={filters.confidence}
-                onValueChange={(value) => handleFilterChange('confidence', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select confidence" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Levels</SelectItem>
-                  <SelectItem value="high">High (&gt;90%)</SelectItem>
-                  <SelectItem value="medium">Medium (70-90%)</SelectItem>
-                  <SelectItem value="low">Low (&lt;70%)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-1">
-                <Filter className="h-3 w-3" />
-                Species Type
-              </label>
-              <Select
-                value={filters.speciesType}
-                onValueChange={(value) => handleFilterChange('speciesType', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select species" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Species</SelectItem>
-                  <SelectItem value="native">Native Only</SelectItem>
-                  <SelectItem value="invasive">Invasive Only</SelectItem>
-                  <SelectItem value="endangered">Endangered</SelectItem>
-                </SelectContent>
-              </Select>
+            {/* See results button */}
+            <div className="pt-6">
+              <Button variant="link" className="text-foreground font-medium">
+                See results
+              </Button>
             </div>
           </div>
 
-          {/* Active Filters */}
-          {activeFilters.length > 0 && (
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm text-muted-foreground">Active filters:</span>
-              {activeFilters.map((filter) => (
-                <Badge key={filter} variant="secondary" className="gap-1">
-                  {filter}: {filters[filter as keyof typeof filters]}
-                </Badge>
-              ))}
-              <Button variant="ghost" size="sm" onClick={clearFilters}>
-                Clear all
-              </Button>
-            </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2 pt-2">
-            <Button onClick={handleSeeResults} className="gap-2">
-              <Search className="h-4 w-4" />
-              See Results
-            </Button>
-            
-            <Button variant="outline" onClick={() => window.location.reload()} className="gap-2">
+          {/* Right side - Action buttons */}
+          <div className="flex items-center gap-2 pt-6">
+            <Button variant="outline" onClick={handleRefresh} className="gap-2">
               <RefreshCw className="h-4 w-4" />
               Refresh
             </Button>
-            
             <Button variant="outline" onClick={handleExport} className="gap-2">
               <Download className="h-4 w-4" />
               Export
