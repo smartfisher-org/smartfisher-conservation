@@ -27,9 +27,7 @@ const navigation = [
   { name: "Data Upload", href: "/upload", icon: Upload },
 ];
 
-const bottomNavigation = [
-  { name: "Settings", href: "/settings", icon: Settings },
-];
+const bottomNavigation = [];
 
 export default function AppSidebar() {
   const location = useLocation();
@@ -81,26 +79,25 @@ export default function AppSidebar() {
         {/* Bottom Navigation Menu */}
         <div className="p-4 pt-0 space-y-2">
           <SidebarMenu>
-            {bottomNavigation.map((item) => (
-              <SidebarMenuItem key={item.name}>
-                <SidebarMenuButton asChild>
-                  <NavLink 
-                    to={item.href} 
-                    className={({ isActive: navIsActive }) => 
-                      cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200",
-                        navIsActive || isActive(item.href)
-                          ? "bg-primary text-primary-foreground shadow-sm" 
-                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                      )
-                    }
-                  >
-                    <item.icon className="w-4 h-4" />
-                    {item.name}
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
+            {/* Settings */}
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <NavLink 
+                  to="/settings" 
+                  className={({ isActive: navIsActive }) => 
+                    cn(
+                      "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                      navIsActive || isActive("/settings")
+                        ? "bg-primary text-primary-foreground shadow-sm" 
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                    )
+                  }
+                >
+                  <Settings className="w-4 h-4" />
+                  Settings
+                </NavLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             
             {/* Back to Website Link */}
             <SidebarMenuItem>
