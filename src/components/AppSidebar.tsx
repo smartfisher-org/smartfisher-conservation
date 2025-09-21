@@ -40,7 +40,7 @@ export default function AppSidebar() {
       <SidebarContent className="flex flex-col h-full">
         {/* Logo Section */}
         <div className="p-4 border-b border-border flex flex-col items-center">
-          <div className="w-24 h-24 mb-3">
+          <div className="w-32 h-32 mb-3">
             <img 
               src={smartfisherLogo} 
               alt="SmartFISHER Logo" 
