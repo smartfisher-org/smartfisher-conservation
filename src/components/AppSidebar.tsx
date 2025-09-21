@@ -62,7 +62,7 @@ export default function AppSidebar() {
                       cn(
                         "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200",
                         navIsActive || isActive(item.href)
-                          ? "bg-primary text-primary-foreground shadow-sm" 
+                          ? "bg-accent text-muted-foreground shadow-sm" 
                           : "text-muted-foreground hover:text-foreground hover:bg-accent"
                       )
                     }
@@ -88,7 +88,7 @@ export default function AppSidebar() {
                     cn(
                       "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200",
                       navIsActive || isActive("/settings")
-                        ? "bg-primary text-primary-foreground shadow-sm" 
+                        ? "bg-accent text-muted-foreground shadow-sm" 
                         : "text-muted-foreground hover:text-foreground hover:bg-accent"
                     )
                   }
