@@ -7,47 +7,141 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Thermometer, Waves, Eye, EyeOff } from 'lucide-react';
 
-// Create a procedural Earth texture
+// Create a detailed procedural Earth texture
 function createEarthTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 512;
+  canvas.width = 2048;
+  canvas.height = 1024;
   const ctx = canvas.getContext('2d')!;
   
-  // Ocean base
-  ctx.fillStyle = '#1e40af';
+  // Create gradient for ocean depth
+  const oceanGradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2);
+  oceanGradient.addColorStop(0, '#2563eb');
+  oceanGradient.addColorStop(0.5, '#1d4ed8');
+  oceanGradient.addColorStop(1, '#1e40af');
+  
+  ctx.fillStyle = oceanGradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
-  // Simple continent shapes (very basic representation)
-  ctx.fillStyle = '#22c55e';
+  // Land color variations
+  const landColors = ['#22c55e', '#16a34a', '#15803d', '#166534'];
   
   // North America
+  ctx.fillStyle = landColors[0];
   ctx.beginPath();
-  ctx.ellipse(150, 150, 80, 60, 0, 0, 2 * Math.PI);
+  ctx.moveTo(100, 200);
+  ctx.quadraticCurveTo(200, 150, 300, 180);
+  ctx.quadraticCurveTo(350, 220, 320, 280);
+  ctx.quadraticCurveTo(280, 320, 200, 300);
+  ctx.quadraticCurveTo(120, 280, 100, 200);
+  ctx.fill();
+  
+  // Greenland
+  ctx.beginPath();
+  ctx.ellipse(400, 120, 30, 40, 0, 0, 2 * Math.PI);
   ctx.fill();
   
   // South America
+  ctx.fillStyle = landColors[1];
   ctx.beginPath();
-  ctx.ellipse(200, 300, 40, 80, 0, 0, 2 * Math.PI);
+  ctx.moveTo(250, 400);
+  ctx.quadraticCurveTo(280, 350, 300, 400);
+  ctx.quadraticCurveTo(320, 500, 300, 600);
+  ctx.quadraticCurveTo(280, 650, 250, 620);
+  ctx.quadraticCurveTo(230, 580, 240, 520);
+  ctx.quadraticCurveTo(230, 460, 250, 400);
   ctx.fill();
   
-  // Europe/Africa
+  // Europe
+  ctx.fillStyle = landColors[2];
   ctx.beginPath();
-  ctx.ellipse(450, 200, 60, 100, 0, 0, 2 * Math.PI);
+  ctx.moveTo(480, 180);
+  ctx.quadraticCurveTo(520, 160, 550, 180);
+  ctx.quadraticCurveTo(570, 200, 560, 230);
+  ctx.quadraticCurveTo(540, 250, 500, 240);
+  ctx.quadraticCurveTo(470, 220, 480, 180);
+  ctx.fill();
+  
+  // Africa
+  ctx.fillStyle = landColors[1];
+  ctx.beginPath();
+  ctx.moveTo(500, 260);
+  ctx.quadraticCurveTo(540, 250, 580, 280);
+  ctx.quadraticCurveTo(590, 350, 580, 420);
+  ctx.quadraticCurveTo(570, 500, 550, 550);
+  ctx.quadraticCurveTo(520, 580, 480, 570);
+  ctx.quadraticCurveTo(450, 550, 460, 500);
+  ctx.quadraticCurveTo(470, 400, 480, 320);
+  ctx.quadraticCurveTo(490, 280, 500, 260);
   ctx.fill();
   
   // Asia
+  ctx.fillStyle = landColors[3];
   ctx.beginPath();
-  ctx.ellipse(650, 180, 120, 70, 0, 0, 2 * Math.PI);
+  ctx.moveTo(600, 160);
+  ctx.quadraticCurveTo(700, 140, 800, 160);
+  ctx.quadraticCurveTo(900, 180, 950, 220);
+  ctx.quadraticCurveTo(980, 260, 950, 300);
+  ctx.quadraticCurveTo(900, 320, 800, 310);
+  ctx.quadraticCurveTo(700, 300, 650, 280);
+  ctx.quadraticCurveTo(620, 240, 600, 160);
+  ctx.fill();
+  
+  // India subcontinent
+  ctx.beginPath();
+  ctx.moveTo(700, 320);
+  ctx.quadraticCurveTo(750, 310, 780, 340);
+  ctx.quadraticCurveTo(790, 380, 770, 400);
+  ctx.quadraticCurveTo(740, 410, 710, 400);
+  ctx.quadraticCurveTo(690, 380, 700, 320);
   ctx.fill();
   
   // Australia
+  ctx.fillStyle = landColors[0];
   ctx.beginPath();
-  ctx.ellipse(800, 350, 50, 30, 0, 0, 2 * Math.PI);
+  ctx.ellipse(1400, 550, 80, 50, 0, 0, 2 * Math.PI);
   ctx.fill();
   
-  // Antarctica (bottom)
-  ctx.fillRect(0, 450, canvas.width, 62);
+  // New Zealand
+  ctx.beginPath();
+  ctx.ellipse(1500, 600, 15, 25, 0, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // Antarctica (bottom strip)
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 900, canvas.width, 124);
+  
+  // Add some texture with smaller islands
+  ctx.fillStyle = landColors[2];
+  // British Isles
+  ctx.beginPath();
+  ctx.ellipse(460, 170, 12, 18, 0, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // Japan
+  ctx.beginPath();
+  ctx.ellipse(980, 250, 8, 25, Math.PI/6, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // Madagascar
+  ctx.beginPath();
+  ctx.ellipse(620, 480, 8, 20, 0, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // Add country borders with thin lines
+  ctx.strokeStyle = '#166534';
+  ctx.lineWidth = 1;
+  
+  // Some major country divisions
+  ctx.beginPath();
+  ctx.moveTo(280, 200);
+  ctx.lineTo(280, 300);
+  ctx.stroke();
+  
+  ctx.beginPath(); 
+  ctx.moveTo(520, 200);
+  ctx.lineTo(540, 250);
+  ctx.stroke();
   
   return new CanvasTexture(canvas);
 }
