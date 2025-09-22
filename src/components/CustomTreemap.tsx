@@ -12,7 +12,7 @@ interface CustomTreemapProps {
   height: number;
 }
 
-// Improved treemap layout algorithm that ensures all items are visible
+// Improved treemap layout algorithm
 const createTreemapLayout = (data: TreemapItem[], width: number, height: number) => {
   const total = data.reduce((sum, item) => sum + item.value, 0);
   const rects: Array<{
@@ -27,53 +27,53 @@ const createTreemapLayout = (data: TreemapItem[], width: number, height: number)
   // Sort data by value descending for better layout
   const sortedData = [...data].sort((a, b) => b.value - a.value);
   
-  // Use a grid-based approach to ensure all items are visible
   let currentX = 0;
   let currentY = 0;
-  let rowHeight = 0;
-  const maxRowWidth = width;
+  let remainingWidth = width;
+  let remainingHeight = height;
   
   sortedData.forEach((item, index) => {
     const percentage = (item.value / total) * 100;
-    const proportionalArea = (item.value / total) * (width * height);
+    const area = (item.value / total) * (width * height);
     
-    // Calculate ideal dimensions based on proportion
-    let rectWidth = Math.sqrt(proportionalArea * (width / height));
-    let rectHeight = proportionalArea / rectWidth;
+    let rectWidth, rectHeight;
     
-    // Ensure minimum sizes for visibility
-    rectWidth = Math.max(rectWidth, width * 0.15); // At least 15% of width
-    rectHeight = Math.max(rectHeight, height * 0.2); // At least 20% of height
-    
-    // Check if we need to start a new row
-    if (currentX + rectWidth > maxRowWidth && currentX > 0) {
-      currentX = 0;
-      currentY += rowHeight;
-      rowHeight = 0;
-    }
-    
-    // Adjust dimensions to fit remaining space if needed
-    const remainingWidth = maxRowWidth - currentX;
-    const remainingHeight = height - currentY;
-    
-    if (rectWidth > remainingWidth) {
+    if (index === sortedData.length - 1) {
+      // Last item takes remaining space
       rectWidth = remainingWidth;
-    }
-    if (rectHeight > remainingHeight) {
       rectHeight = remainingHeight;
+    } else {
+      // Calculate dimensions based on remaining area and optimal aspect ratio
+      const aspectRatio = remainingWidth / remainingHeight;
+      
+      if (aspectRatio > 1) {
+        // Wider than tall - place items horizontally
+        rectWidth = (item.value / total) * width;
+        rectHeight = remainingHeight;
+      } else {
+        // Taller than wide - place items vertically  
+        rectWidth = remainingWidth;
+        rectHeight = (item.value / total) * height;
+      }
     }
     
     rects.push({
       x: currentX,
       y: currentY,
-      width: rectWidth,
-      height: rectHeight,
+      width: Math.max(rectWidth, 50), // Minimum width
+      height: Math.max(rectHeight, 40), // Minimum height
       item,
       percentage
     });
     
-    currentX += rectWidth;
-    rowHeight = Math.max(rowHeight, rectHeight);
+    // Update position for next rectangle
+    if (remainingWidth > remainingHeight) {
+      currentX += rectWidth;
+      remainingWidth -= rectWidth;
+    } else {
+      currentY += rectHeight;
+      remainingHeight -= rectHeight;
+    }
   });
   
   return rects;
