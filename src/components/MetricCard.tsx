@@ -4,7 +4,7 @@ import { LucideIcon, TrendingUp, TrendingDown } from "lucide-react";
 interface MetricCardProps {
   title: string;
   value: string | number;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   trend?: string;
   trendUp?: boolean;
 }
@@ -34,9 +34,11 @@ export default function MetricCard({ title, value, icon: Icon, trend, trendUp }:
               </div>
             )}
           </div>
-          <div className="p-3 bg-gradient-ocean rounded-lg">
-            <Icon className="h-6 w-6 text-white" />
-          </div>
+          {Icon && (
+            <div className="p-3 bg-gradient-ocean rounded-lg">
+              <Icon className="h-6 w-6 text-white" />
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

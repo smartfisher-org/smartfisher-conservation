@@ -113,28 +113,24 @@ export default function Dashboard() {
         <MetricCard
           title="Species Count"
           value={data?.metrics.speciesCount || 0}
-          icon={Fish}
           trend="+5.2%"
           trendUp={true}
         />
         <MetricCard
           title="Total Fish Count"
           value={data?.metrics.totalFish || 0}
-          icon={Activity}
           trend="+12.8%"
           trendUp={true}
         />
         <MetricCard
           title="Invasive Species"
           value={`${data?.metrics.invasivePercent || 0}%`}
-          icon={AlertTriangle}
           trend="-2.1%"
           trendUp={false}
         />
         <MetricCard
           title="Camera Health"
           value={`${data?.metrics.cameraHealth || 0}%`}
-          icon={Camera}
           trend="+1.5%"
           trendUp={true}
         />
