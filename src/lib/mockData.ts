@@ -19,6 +19,14 @@ export interface DashboardData {
     speciesCount: Array<{ name: string; value: number; children?: Array<{ name: string; value: number; invasive?: boolean }> }>;
     invasiveSpecies: Array<{ date: string; native: number; invasive: number }>;
   };
+  unidentifiedSpecies: Array<{
+    id: string;
+    image: string;
+    timestamp: string;
+    location: string;
+    confidenceScore: number;
+    detectedFeatures: string[];
+  }>;
 }
 
 export const mockDashboardData = async (): Promise<DashboardData> => {
@@ -98,5 +106,39 @@ export const mockDashboardData = async (): Promise<DashboardData> => {
         { date: '2024-01-07', native: 82, invasive: 18 },
       ],
     },
+    unidentifiedSpecies: [
+      {
+        id: '1',
+        image: '/src/assets/live-feed.jpg',
+        timestamp: '2024-01-07 14:32:15',
+        location: 'Coral Reef Tank A',
+        confidenceScore: 0.45,
+        detectedFeatures: ['elongated body', 'striped pattern', 'medium size']
+      },
+      {
+        id: '2',
+        image: '/src/assets/live-feed.jpg',
+        timestamp: '2024-01-07 13:28:42',
+        location: 'Deep Sea Tank C',
+        confidenceScore: 0.38,
+        detectedFeatures: ['rounded fins', 'mottled coloration', 'bottom dweller']
+      },
+      {
+        id: '3',
+        image: '/src/assets/live-feed.jpg',
+        timestamp: '2024-01-07 12:15:33',
+        location: 'Coastal Zone B',
+        confidenceScore: 0.42,
+        detectedFeatures: ['large eyes', 'transparent fins', 'schooling behavior']
+      },
+      {
+        id: '4',
+        image: '/src/assets/live-feed.jpg',
+        timestamp: '2024-01-07 11:45:18',
+        location: 'Coral Reef Tank A',
+        confidenceScore: 0.35,
+        detectedFeatures: ['unusual coloration', 'asymmetric fins', 'nocturnal']
+      }
+    ],
   };
 };

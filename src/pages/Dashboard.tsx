@@ -13,7 +13,10 @@ import {
   Activity, 
   MapPin,
   AlertTriangle,
-  Camera
+  Camera,
+  HelpCircle,
+  Clock,
+  MapPinIcon
 } from "lucide-react";
 
 
@@ -148,6 +151,54 @@ export default function Dashboard() {
           data={data?.charts.invasiveSpecies || []}
         />
       </div>
+
+      {/* Unidentified Species Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <HelpCircle className="h-5 w-5" />
+            Unidentified / Low Confidence Species
+          </CardTitle>
+          <CardDescription>
+            Species detected with confidence score below 50% - requires manual review
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4">
+            {data?.unidentifiedSpecies.map((species) => (
+              <div key={species.id} className="flex items-center gap-4 p-4 border rounded-lg bg-muted/10">
+                <img 
+                  src={species.image} 
+                  alt="Unidentified species"
+                  className="w-16 h-16 object-cover rounded-lg"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge variant="secondary" className="text-xs">
+                      {Math.round(species.confidenceScore * 100)}% confidence
+                    </Badge>
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Clock className="h-3 w-3" />
+                      {species.timestamp}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+                    <MapPinIcon className="h-3 w-3" />
+                    {species.location}
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {species.detectedFeatures.map((feature, index) => (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {feature}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
