@@ -12,11 +12,9 @@ interface CustomTreemapProps {
   height: number;
 }
 
-// Simple treemap algorithm using squarified layout
-const squarify = (data: TreemapItem[], width: number, height: number) => {
+// Improved treemap layout algorithm
+const createTreemapLayout = (data: TreemapItem[], width: number, height: number) => {
   const total = data.reduce((sum, item) => sum + item.value, 0);
-  const area = width * height;
-  
   const rects: Array<{
     x: number;
     y: number;
@@ -25,62 +23,55 @@ const squarify = (data: TreemapItem[], width: number, height: number) => {
     item: TreemapItem;
     percentage: number;
   }> = [];
+
+  // Sort data by value descending for better layout
+  const sortedData = [...data].sort((a, b) => b.value - a.value);
   
-  let x = 0;
-  let y = 0;
+  let currentX = 0;
+  let currentY = 0;
   let remainingWidth = width;
   let remainingHeight = height;
   
-  data.forEach((item, index) => {
-    const itemArea = (item.value / total) * area;
+  sortedData.forEach((item, index) => {
     const percentage = (item.value / total) * 100;
+    const area = (item.value / total) * (width * height);
     
-    // Simple layout algorithm - can be improved with proper squarified treemap
     let rectWidth, rectHeight;
     
-    if (index === 0) {
-      // First item takes a portion based on its relative size
-      if (width > height) {
-        rectWidth = Math.sqrt(itemArea * (width / height));
-        rectHeight = itemArea / rectWidth;
-      } else {
-        rectHeight = Math.sqrt(itemArea * (height / width));
-        rectWidth = itemArea / rectHeight;
-      }
+    if (index === sortedData.length - 1) {
+      // Last item takes remaining space
+      rectWidth = remainingWidth;
+      rectHeight = remainingHeight;
     } else {
-      // Subsequent items fill remaining space
-      const remainingItems = data.length - index;
-      const remainingValue = data.slice(index).reduce((sum, item) => sum + item.value, 0);
-      const remainingArea = (remainingValue / total) * area;
+      // Calculate dimensions based on remaining area and optimal aspect ratio
+      const aspectRatio = remainingWidth / remainingHeight;
       
-      if (remainingWidth > remainingHeight) {
-        rectWidth = remainingWidth / remainingItems;
-        rectHeight = itemArea / rectWidth;
+      if (aspectRatio > 1) {
+        // Wider than tall - place items horizontally
+        rectWidth = (item.value / total) * width;
+        rectHeight = remainingHeight;
       } else {
-        rectHeight = remainingHeight / remainingItems;
-        rectWidth = itemArea / rectHeight;
+        // Taller than wide - place items vertically  
+        rectWidth = remainingWidth;
+        rectHeight = (item.value / total) * height;
       }
     }
     
-    // Ensure dimensions don't exceed available space
-    rectWidth = Math.min(rectWidth, remainingWidth);
-    rectHeight = Math.min(rectHeight, remainingHeight);
-    
     rects.push({
-      x,
-      y,
-      width: rectWidth,
-      height: rectHeight,
+      x: currentX,
+      y: currentY,
+      width: Math.max(rectWidth, 50), // Minimum width
+      height: Math.max(rectHeight, 40), // Minimum height
       item,
       percentage
     });
     
     // Update position for next rectangle
-    if (width > height) {
-      x += rectWidth;
+    if (remainingWidth > remainingHeight) {
+      currentX += rectWidth;
       remainingWidth -= rectWidth;
     } else {
-      y += rectHeight;
+      currentY += rectHeight;
       remainingHeight -= rectHeight;
     }
   });
@@ -89,14 +80,14 @@ const squarify = (data: TreemapItem[], width: number, height: number) => {
 };
 
 export default function CustomTreemap({ data, width, height }: CustomTreemapProps) {
-  const rectangles = squarify(data, width, height);
+  const rectangles = createTreemapLayout(data, width, height);
   
   return (
     <svg width={width} height={height} className="overflow-hidden">
       {rectangles.map((rect, index) => {
-        const bgColor = rect.item.invasive ? '#dc2626' : '#16a34a'; // red-600 : green-600
+        const bgColor = rect.item.invasive ? 'rgba(220, 38, 38, 0.8)' : 'rgba(34, 197, 94, 0.8)'; // More transparent
         const textColor = 'white';
-        const canShowText = rect.width > 120 && rect.height > 60;
+        const canShowText = rect.width > 80 && rect.height > 50;
         
         return (
           <g key={index}>
