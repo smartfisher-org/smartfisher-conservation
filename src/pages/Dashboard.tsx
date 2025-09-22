@@ -40,30 +40,6 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Conservation Dashboard</h1>
-          
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => refetch()}
-            className="gap-2"
-          >
-            <RefreshCw className="h-4 w-4" />
-            Refresh
-          </Button>
-          <Button size="sm" className="gap-2 bg-gradient-ocean text-white hover:shadow-glow">
-            <Download className="h-4 w-4" />
-            Export
-          </Button>
-        </div>
-      </div>
-
       {/* Navigation Tabs */}
       <Tabs defaultValue="conservation" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
