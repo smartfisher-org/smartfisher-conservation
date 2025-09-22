@@ -124,13 +124,13 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 gap-6">
-        {/* Location Map */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Map */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MapPin className="h-5 w-5" />
-              Location Overview
+              Map
             </CardTitle>
             <CardDescription>
               Interactive monitoring locations
@@ -140,36 +140,36 @@ export default function Dashboard() {
             <CesiumGlobe />
           </CardContent>
         </Card>
-      </div>
 
-      {/* Live Feed Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Camera className="h-5 w-5" />
-            Live Camera Feed
-            <Badge className="bg-success text-white ml-auto">LIVE</Badge>
-          </CardTitle>
-          <CardDescription>
-            Most active monitoring station - Coral Reef Tank A
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="relative">
-            <img 
-              src="/src/assets/live-feed.jpg" 
-              alt="Live underwater camera feed showing marine life" 
-              className="w-full h-48 object-cover rounded-lg"
-            />
-            <div className="absolute bottom-3 left-3 bg-background/90 backdrop-blur-sm px-3 py-1 rounded text-sm">
-              Species detected: 8 | Last update: 12s ago
+        {/* Live Camera Feed */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Camera className="h-5 w-5" />
+              Live Camera Feed
+              <Badge className="bg-success text-white ml-auto">LIVE</Badge>
+            </CardTitle>
+            <CardDescription>
+              Most active monitoring station - Coral Reef Tank A
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="relative">
+              <img 
+                src="/src/assets/live-feed.jpg" 
+                alt="Live underwater camera feed showing marine life" 
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <div className="absolute bottom-3 left-3 bg-background/90 backdrop-blur-sm px-3 py-1 rounded text-sm">
+                Species detected: 8 | Last update: 12s ago
+              </div>
+              <div className="absolute top-3 right-3 bg-success/90 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-medium">
+                REC
+              </div>
             </div>
-            <div className="absolute top-3 right-3 bg-success/90 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-medium">
-              REC
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
