@@ -6,6 +6,7 @@ import MetricCard from "@/components/MetricCard";
 import ChartContainer from "@/components/ChartContainer";
 import AlertsPanel from "@/components/AlertsPanel";
 import ControlPanel from "@/components/ControlPanel";
+import Globe from "@/components/Globe";
 import { 
   Fish, 
   Activity, 
@@ -150,13 +151,7 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-64 bg-gradient-surface rounded-lg flex items-center justify-center border-2 border-dashed border-muted">
-              <div className="text-center">
-                <MapPin className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">Interactive map placeholder</p>
-                <p className="text-xs text-muted-foreground mt-1">Click regions to view detailed monitoring data</p>
-              </div>
-            </div>
+            <Globe />
           </CardContent>
         </Card>
 
