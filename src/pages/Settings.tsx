@@ -34,6 +34,12 @@ export default function Settings() {
     company: 'SmartFISHER'
   });
 
+  const [notifications, setNotifications] = useState({
+    emailNotifications: true,
+    systemNotifications: true,
+    alerts: true
+  });
+
   const handleSaveChanges = () => {
     toast({
       title: "Changes Saved",
@@ -124,9 +130,52 @@ export default function Settings() {
         <TabsContent value="notifications" className="space-y-6 mt-6">
           <Card className="bg-card border border-border">
             <CardContent className="p-8">
-              <div>
-                <h2 className="text-xl font-semibold text-foreground">Notification Preferences</h2>
-                <p className="text-muted-foreground mt-1">Configure how and when you receive alerts</p>
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">Notification Preferences</h2>
+                  <p className="text-muted-foreground mt-1">Configure how you receive notifications</p>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <h3 className="text-base font-medium text-foreground">Email Notifications</h3>
+                      <p className="text-sm text-muted-foreground">Receive email notifications for important updates</p>
+                    </div>
+                    <Switch
+                      checked={notifications.emailNotifications}
+                      onCheckedChange={(checked) => 
+                        setNotifications({ ...notifications, emailNotifications: checked })
+                      }
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <h3 className="text-base font-medium text-foreground">System Notifications</h3>
+                      <p className="text-sm text-muted-foreground">Show desktop notifications</p>
+                    </div>
+                    <Switch
+                      checked={notifications.systemNotifications}
+                      onCheckedChange={(checked) => 
+                        setNotifications({ ...notifications, systemNotifications: checked })
+                      }
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <h3 className="text-base font-medium text-foreground">Alerts</h3>
+                      <p className="text-sm text-muted-foreground">Receive alert notifications</p>
+                    </div>
+                    <Switch
+                      checked={notifications.alerts}
+                      onCheckedChange={(checked) => 
+                        setNotifications({ ...notifications, alerts: checked })
+                      }
+                    />
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
