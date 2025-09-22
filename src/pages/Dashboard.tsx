@@ -54,20 +54,6 @@ const mockDashboardData = {
   },
   alerts: [
     {
-      id: "1",
-      type: "warning" as const,
-      title: "Unusual Fish Behavior Detected",
-      message: "Abnormal swimming patterns observed in Tank A",
-      timestamp: "2 minutes ago"
-    },
-    {
-      id: "2", 
-      type: "info" as const,
-      title: "New Species Identified",
-      message: "Potential new coral species discovered",
-      timestamp: "15 minutes ago"
-    },
-    {
       id: "3",
       type: "error" as const, 
       title: "Camera Offline",
