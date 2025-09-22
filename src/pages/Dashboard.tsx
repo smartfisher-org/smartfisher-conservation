@@ -158,7 +158,7 @@ export default function Dashboard() {
               <img 
                 src="/src/assets/live-feed.jpg" 
                 alt="Live underwater camera feed showing marine life" 
-                className="w-full h-48 object-cover rounded-lg"
+                className="w-full h-64 object-cover rounded-lg"
               />
               <div className="absolute bottom-3 left-3 bg-background/90 backdrop-blur-sm px-3 py-1 rounded text-sm">
                 Species detected: 8 | Last update: 12s ago
