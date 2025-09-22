@@ -78,10 +78,11 @@ export const mockDashboardData = async (): Promise<DashboardData> => {
           name: 'Marine Species',
           value: 100,
           children: [
-            { name: 'Tropical Fish', value: 35 },
-            { name: 'Coral Species', value: 28 },
-            { name: 'Invertebrates', value: 22 },
-            { name: 'Other', value: 15 },
+            { name: 'Pink salmon (Oncorhynchus gorbuscha)', value: 23 },
+            { name: 'Arctic charr (Salvelinus alpinus)', value: 18 },
+            { name: 'Atlantic salmon (Salmo salar)', value: 31 },
+            { name: 'Brown trout (Salmo trutta)', value: 15 },
+            { name: 'European flounder (Platichthys flesus)', value: 13 },
           ]
         }
       ],

@@ -7,6 +7,7 @@ import ChartContainer from "@/components/ChartContainer";
 import AlertsPanel from "@/components/AlertsPanel";
 import ControlPanel from "@/components/ControlPanel";
 import CesiumGlobe from "@/components/CesiumGlobe";
+import { mockDashboardData } from "@/lib/mockData";
 import { 
   Fish, 
   Activity, 
@@ -15,62 +16,11 @@ import {
   Camera
 } from "lucide-react";
 
-// Mock data - would normally come from an API
-const mockDashboardData = {
-  metrics: {
-    speciesCount: 42,
-    totalFish: 1847,
-    invasivePercent: 12,
-    cameraHealth: 96
-  },
-  charts: {
-    speciesRichness: [
-      { name: "Jan", value: 35 },
-      { name: "Feb", value: 38 },
-      { name: "Mar", value: 42 },
-      { name: "Apr", value: 39 },
-      { name: "May", value: 45 }
-    ],
-    shannonIndex: [
-      { name: "Jan", value: 2.1 },
-      { name: "Feb", value: 2.3 },
-      { name: "Mar", value: 2.5 },
-      { name: "Apr", value: 2.2 },
-      { name: "May", value: 2.7 }
-    ],
-    speciesCount: [
-      { name: "Native", value: 68 },
-      { name: "Invasive", value: 12 },
-      { name: "Endangered", value: 8 },
-      { name: "Common", value: 45 }
-    ],
-    invasiveSpecies: [
-      { name: "Jan", value: 8 },
-      { name: "Feb", value: 10 },
-      { name: "Mar", value: 12 },
-      { name: "Apr", value: 11 },
-      { name: "May", value: 9 }
-    ]
-  },
-  alerts: [
-    {
-      id: "3",
-      type: "error" as const, 
-      title: "Camera Offline",
-      message: "Camera 3 in Deep Sea section is offline",
-      timestamp: "1 hour ago"
-    }
-  ]
-};
 
 export default function Dashboard() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['dashboard'],
-    queryFn: async () => {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return mockDashboardData;
-    }
+    queryFn: mockDashboardData
   });
 
   if (isLoading) {
