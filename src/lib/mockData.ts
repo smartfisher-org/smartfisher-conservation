@@ -76,13 +76,13 @@ export const mockDashboardData = async (): Promise<DashboardData> => {
       speciesCount: [
         {
           name: 'Marine Species',
-          value: 100,
+          value: 109,
           children: [
-            { name: 'Pink salmon (Oncorhynchus gorbuscha)', value: 23, invasive: true },
-            { name: 'Arctic charr (Salvelinus alpinus)', value: 18, invasive: false },
-            { name: 'Atlantic salmon (Salmo salar)', value: 31, invasive: false },
-            { name: 'Brown trout (Salmo trutta)', value: 15, invasive: false },
-            { name: 'European flounder (Platichthys flesus)', value: 13, invasive: false },
+            { name: 'Pink salmon (Oncorhynchus gorbuscha)', value: 60, invasive: true },
+            { name: 'Arctic charr (Salvelinus alpinus)', value: 10, invasive: false },
+            { name: 'Atlantic salmon (Salmo salar)', value: 12, invasive: false },
+            { name: 'Brown trout (Salmo trutta)', value: 7, invasive: false },
+            { name: 'European flounder (Platichthys flesus)', value: 20, invasive: false },
           ]
         }
       ],
