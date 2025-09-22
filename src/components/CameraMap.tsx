@@ -132,6 +132,13 @@ const CameraMap = () => {
     }
   };
 
+  const handleResetToken = () => {
+    setTokenSaved(false);
+    setMapboxToken('');
+    map.current?.remove();
+    map.current = null;
+  };
+
   useEffect(() => {
     return () => {
       map.current?.remove();
@@ -225,6 +232,14 @@ const CameraMap = () => {
             <span>Offline</span>
           </div>
         </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleResetToken}
+          className="text-xs h-auto p-1 mt-2 w-full"
+        >
+          Reset Token
+        </Button>
       </div>
     </div>
   );
