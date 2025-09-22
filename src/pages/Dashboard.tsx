@@ -182,16 +182,9 @@ export default function Dashboard() {
                       {species.timestamp}
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <MapPinIcon className="h-3 w-3" />
                     {species.location}
-                  </div>
-                  <div className="flex flex-wrap gap-1">
-                    {species.detectedFeatures.map((feature, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {feature}
-                      </Badge>
-                    ))}
                   </div>
                 </div>
               </div>
