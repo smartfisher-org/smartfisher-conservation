@@ -20,6 +20,8 @@ import { toast } from "@/hooks/use-toast";
 export default function ControlPanel() {
   const [location, setLocation] = useState("all");
   const [timePeriod, setTimePeriod] = useState("18d");
+  const [confidence, setConfidence] = useState("all");
+  const [speciesType, setSpeciesType] = useState("all");
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
     to: Date | undefined;
@@ -54,7 +56,7 @@ export default function ControlPanel() {
         <div className="flex items-end justify-between gap-6">
           <div className="flex items-end gap-6 flex-1">
             {/* Location */}
-            <div className="space-y-2 min-w-[200px]">
+            <div className="space-y-2 min-w-[160px]">
               <label className="text-sm font-medium text-foreground">
                 Location
               </label>
@@ -104,7 +106,7 @@ export default function ControlPanel() {
             </div>
 
             {/* Time Period */}
-            <div className="space-y-2 min-w-[200px]">
+            <div className="space-y-2 min-w-[160px]">
               <label className="text-sm font-medium text-foreground">
                 Time Period
               </label>
@@ -118,6 +120,42 @@ export default function ControlPanel() {
                   <SelectItem value="7d">Last 7 Days</SelectItem>
                   <SelectItem value="30d">Last 30 Days</SelectItem>
                   <SelectItem value="90d">Last 90 Days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Confidence */}
+            <div className="space-y-2 min-w-[140px]">
+              <label className="text-sm font-medium text-foreground">
+                Confidence
+              </label>
+              <Select value={confidence} onValueChange={setConfidence}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="high">High (&gt;90%)</SelectItem>
+                  <SelectItem value="medium">Medium (70-90%)</SelectItem>
+                  <SelectItem value="low">Low (&lt;70%)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Species Type */}
+            <div className="space-y-2 min-w-[140px]">
+              <label className="text-sm font-medium text-foreground">
+                Species Type
+              </label>
+              <Select value={speciesType} onValueChange={setSpeciesType}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="native">Native</SelectItem>
+                  <SelectItem value="invasive">Invasive</SelectItem>
+                  <SelectItem value="endangered">Endangered</SelectItem>
                 </SelectContent>
               </Select>
             </div>
