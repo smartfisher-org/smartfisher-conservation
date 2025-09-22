@@ -15,7 +15,7 @@ export interface DashboardData {
   charts: {
     speciesRichness: Array<{ date: string; value: number }>;
     shannonIndex: Array<{ date: string; value: number }>;
-    speciesCount: Array<{ name: string; value: number; children?: Array<{ name: string; value: number }> }>;
+    speciesCount: Array<{ name: string; value: number; children?: Array<{ name: string; value: number; invasive?: boolean }> }>;
     invasiveSpecies: Array<{ date: string; native: number; invasive: number }>;
   };
 }
@@ -78,11 +78,11 @@ export const mockDashboardData = async (): Promise<DashboardData> => {
           name: 'Marine Species',
           value: 100,
           children: [
-            { name: 'Pink salmon (Oncorhynchus gorbuscha)', value: 23 },
-            { name: 'Arctic charr (Salvelinus alpinus)', value: 18 },
-            { name: 'Atlantic salmon (Salmo salar)', value: 31 },
-            { name: 'Brown trout (Salmo trutta)', value: 15 },
-            { name: 'European flounder (Platichthys flesus)', value: 13 },
+            { name: 'Pink salmon (Oncorhynchus gorbuscha)', value: 23, invasive: true },
+            { name: 'Arctic charr (Salvelinus alpinus)', value: 18, invasive: false },
+            { name: 'Atlantic salmon (Salmo salar)', value: 31, invasive: false },
+            { name: 'Brown trout (Salmo trutta)', value: 15, invasive: false },
+            { name: 'European flounder (Platichthys flesus)', value: 13, invasive: false },
           ]
         }
       ],

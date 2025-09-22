@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Treemap, Cell } from "recharts";
+import CustomTreemap from "./CustomTreemap";
 
 interface ChartContainerProps {
   title: string;
@@ -88,38 +89,15 @@ export default function ChartContainer({ title, type, data, description }: Chart
       
       case 'tree':
         const treeData = data[0]?.children || [];
-        const total = treeData.reduce((sum, item) => sum + item.value, 0);
         
         return (
-          <ResponsiveContainer width="100%" height={300}>
-            <Treemap
+          <div className="w-full h-[400px] p-4">
+            <CustomTreemap 
               data={treeData}
-              dataKey="value"
-              aspectRatio={4/3}
-              stroke="hsl(var(--background))"
-            >
-              <Tooltip 
-                content={({ active, payload }) => {
-                  if (active && payload && payload[0]) {
-                    const data = payload[0].payload;
-                    const percentage = ((data.value / total) * 100).toFixed(1);
-                    return (
-                      <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
-                        <p className="font-medium text-foreground">{data.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          Count: <span className="font-medium">{data.value}</span> ({percentage}%)
-                        </p>
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
-              />
-              {treeData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Treemap>
-          </ResponsiveContainer>
+              width={800}
+              height={350}
+            />
+          </div>
         );
       
       default:
