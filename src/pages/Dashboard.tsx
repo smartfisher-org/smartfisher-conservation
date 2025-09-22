@@ -6,7 +6,7 @@ import MetricCard from "@/components/MetricCard";
 import ChartContainer from "@/components/ChartContainer";
 import AlertsPanel from "@/components/AlertsPanel";
 import ControlPanel from "@/components/ControlPanel";
-import CesiumGlobe from "@/components/CesiumGlobe";
+import CameraMap from "@/components/CameraMap";
 import { mockDashboardData } from "@/lib/mockData";
 import { 
   Fish, 
@@ -83,14 +83,14 @@ export default function Dashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MapPin className="h-5 w-5" />
-              Map
+              Camera Locations
             </CardTitle>
             <CardDescription>
-              Interactive monitoring locations
+              Marine monitoring stations worldwide
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <CesiumGlobe />
+            <CameraMap />
           </CardContent>
         </Card>
 
