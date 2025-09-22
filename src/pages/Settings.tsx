@@ -40,6 +40,11 @@ export default function Settings() {
     alerts: true
   });
 
+  const [appearance, setAppearance] = useState({
+    theme: 'system',
+    density: 'comfortable'
+  });
+
   const [apiKey] = useState('sk-1234567890abcdef1234567890abcdef');
 
   const handleCopyApiKey = () => {
@@ -210,9 +215,62 @@ export default function Settings() {
         <TabsContent value="appearance" className="space-y-6 mt-6">
           <Card className="bg-card border border-border">
             <CardContent className="p-8">
-              <div>
-                <h2 className="text-xl font-semibold text-foreground">Appearance Settings</h2>
-                <p className="text-muted-foreground mt-1">Customize the look and feel of the application</p>
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">Appearance</h2>
+                  <p className="text-muted-foreground mt-1">Customize the look and feel of the application</p>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">Theme</Label>
+                    <select 
+                      value={appearance.theme}
+                      onChange={(e) => setAppearance({ ...appearance, theme: e.target.value })}
+                      className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+                    >
+                      <option value="system">System</option>
+                      <option value="light">Light</option>
+                      <option value="dark">Dark</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">Density</Label>
+                    <div className="grid grid-cols-3 gap-4">
+                      <button
+                        onClick={() => setAppearance({ ...appearance, density: 'compact' })}
+                        className={`p-4 border rounded-md text-center ${
+                          appearance.density === 'compact' 
+                            ? 'border-primary bg-primary/5' 
+                            : 'border-border bg-background'
+                        }`}
+                      >
+                        <div className="text-sm font-medium text-foreground">Compact</div>
+                      </button>
+                      <button
+                        onClick={() => setAppearance({ ...appearance, density: 'comfortable' })}
+                        className={`p-4 border rounded-md text-center ${
+                          appearance.density === 'comfortable' 
+                            ? 'border-primary bg-primary/5' 
+                            : 'border-border bg-background'
+                        }`}
+                      >
+                        <div className="text-sm font-medium text-foreground">Comfortable</div>
+                      </button>
+                      <button
+                        onClick={() => setAppearance({ ...appearance, density: 'spacious' })}
+                        className={`p-4 border rounded-md text-center ${
+                          appearance.density === 'spacious' 
+                            ? 'border-primary bg-primary/5' 
+                            : 'border-border bg-background'
+                        }`}
+                      >
+                        <div className="text-sm font-medium text-foreground">Spacious</div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
