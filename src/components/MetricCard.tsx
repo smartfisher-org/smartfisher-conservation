@@ -12,8 +12,8 @@ interface MetricCardProps {
 export default function MetricCard({ title, value, icon: Icon, trend, trendUp }: MetricCardProps) {
   return (
     <Card className="hover:shadow-surface transition-shadow cursor-pointer">
-      <CardContent className="p-4">
-        <div className="space-y-2">
+      <CardContent className="p-3">
+        <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">{title}</p>
           <p className="text-2xl font-bold text-foreground">{value}</p>
           {trend && (
