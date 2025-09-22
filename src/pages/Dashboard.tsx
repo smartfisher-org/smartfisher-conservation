@@ -171,8 +171,17 @@ export default function Dashboard() {
         </Card>
       </div>
 
+      {/* Species Distribution Chart - Full Width */}
+      <div className="w-full">
+        <ChartContainer
+          title="Species Distribution"
+          type="tree"
+          data={data?.charts.speciesCount || []}
+        />
+      </div>
+
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <ChartContainer
           title="Species Richness Trend"
           type="line"
@@ -182,11 +191,6 @@ export default function Dashboard() {
           title="Shannon Diversity Index"
           type="line"
           data={data?.charts.shannonIndex || []}
-        />
-        <ChartContainer
-          title="Species Distribution"
-          type="tree"
-          data={data?.charts.speciesCount || []}
         />
         <ChartContainer
           title="Invasive Species Growth"
