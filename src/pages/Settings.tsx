@@ -40,6 +40,31 @@ export default function Settings() {
     alerts: true
   });
 
+  const [apiKey] = useState('sk-1234567890abcdef1234567890abcdef');
+
+  const handleCopyApiKey = () => {
+    navigator.clipboard.writeText(apiKey);
+    toast({
+      title: "API Key Copied",
+      description: "API key has been copied to clipboard.",
+    });
+  };
+
+  const handleRegenerateApiKey = () => {
+    toast({
+      title: "API Key Regenerated",
+      description: "A new API key has been generated.",
+    });
+  };
+
+  const handleDeleteAccount = () => {
+    toast({
+      title: "Account Deletion",
+      description: "Account deletion functionality would be implemented here.",
+      variant: "destructive",
+    });
+  };
+
   const handleSaveChanges = () => {
     toast({
       title: "Changes Saved",
@@ -197,9 +222,38 @@ export default function Settings() {
         <TabsContent value="advanced" className="space-y-6 mt-6">
           <Card className="bg-card border border-border">
             <CardContent className="p-8">
-              <div>
-                <h2 className="text-xl font-semibold text-foreground">Advanced Settings</h2>
-                <p className="text-muted-foreground mt-1">Configure advanced options and preferences</p>
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">Advanced Settings</h2>
+                  <p className="text-muted-foreground mt-1">Configure advanced application settings</p>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">API Key</Label>
+                    <div className="flex items-center gap-3">
+                      <Input
+                        value="••••••••••••••••"
+                        readOnly
+                        className="bg-background flex-1"
+                      />
+                      <Button variant="outline" onClick={handleCopyApiKey}>
+                        Copy
+                      </Button>
+                      <Button variant="outline" onClick={handleRegenerateApiKey}>
+                        Regenerate
+                      </Button>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Keep your API key secure and don't share it with others</p>
+                  </div>
+
+                  <div className="space-y-3 pt-6">
+                    <Button variant="destructive" onClick={handleDeleteAccount}>
+                      Delete Account
+                    </Button>
+                    <p className="text-sm text-muted-foreground">This action cannot be undone. All your data will be permanently deleted.</p>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
