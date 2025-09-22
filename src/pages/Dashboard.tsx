@@ -124,9 +124,9 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         {/* Location Map */}
-        <Card className="lg:col-span-2">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MapPin className="h-5 w-5" />
@@ -140,9 +140,6 @@ export default function Dashboard() {
             <CesiumGlobe />
           </CardContent>
         </Card>
-
-        {/* Alerts Panel */}
-        <AlertsPanel alerts={data?.alerts || []} />
       </div>
 
       {/* Live Feed Section */}
