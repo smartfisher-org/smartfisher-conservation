@@ -224,11 +224,11 @@ export default function DataUpload() {
                   <div className="text-sm font-medium">Template includes:</div>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li>• <strong>timestamp</strong> - Measurement date and time</li>
-                    <li>• <strong>fish_id</strong> - Individual fish identifier (optional)</li>
-                    <li>• <strong>weight_kg</strong> - Fish weight in kilograms</li>
-                    <li>• <strong>length_cm</strong> - Fish length in centimeters</li>
-                    <li>• <strong>tank_id</strong> - Tank identifier (A, B, C, etc.)</li>
-                    <li>• <strong>species</strong> - Fish species (optional)</li>
+                    <li>• <strong>location_name</strong> - Location identifier (North Bay, South Inlet, etc.)</li>
+                    <li>• <strong>fish_count</strong> - Number of fish observed</li>
+                    <li>• <strong>species_name</strong> - Fish species name</li>
+                    <li>• <strong>invasive_species</strong> - Yes/No flag for invasive species</li>
+                    <li>• <strong>data_source</strong> - Source of the data (optional)</li>
                     <li>• <strong>notes</strong> - Additional observations (optional)</li>
                   </ul>
                 </div>
@@ -239,8 +239,9 @@ export default function DataUpload() {
                 </Button>
 
                 <div className="text-xs text-muted-foreground space-y-1">
-                  <div><strong>Required fields:</strong> timestamp, weight_kg, length_cm, tank_id</div>
+                  <div><strong>Required fields:</strong> timestamp, location_name, fish_count, species_name, invasive_species</div>
                   <div><strong>Date format:</strong> YYYY-MM-DD HH:MM:SS</div>
+                  <div><strong>Invasive species:</strong> Use "Yes" or "No"</div>
                 </div>
               </CardContent>
             </Card>
