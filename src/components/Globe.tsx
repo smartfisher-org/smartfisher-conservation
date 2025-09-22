@@ -1,13 +1,56 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Sphere, Html } from '@react-three/drei';
-import { Mesh, Vector3, BufferGeometry, BufferAttribute, Points, PointsMaterial, AdditiveBlending, Group } from 'three';
+import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber';
+import { OrbitControls, Sphere, Html, useTexture } from '@react-three/drei';
+import { Mesh, Vector3, BufferGeometry, BufferAttribute, Points, PointsMaterial, AdditiveBlending, Group, TextureLoader, CanvasTexture } from 'three';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Thermometer, Waves, Eye, EyeOff } from 'lucide-react';
 
-// Mock temperature data points
+// Create a procedural Earth texture
+function createEarthTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d')!;
+  
+  // Ocean base
+  ctx.fillStyle = '#1e40af';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Simple continent shapes (very basic representation)
+  ctx.fillStyle = '#22c55e';
+  
+  // North America
+  ctx.beginPath();
+  ctx.ellipse(150, 150, 80, 60, 0, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // South America
+  ctx.beginPath();
+  ctx.ellipse(200, 300, 40, 80, 0, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // Europe/Africa
+  ctx.beginPath();
+  ctx.ellipse(450, 200, 60, 100, 0, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // Asia
+  ctx.beginPath();
+  ctx.ellipse(650, 180, 120, 70, 0, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // Australia
+  ctx.beginPath();
+  ctx.ellipse(800, 350, 50, 30, 0, 0, 2 * Math.PI);
+  ctx.fill();
+  
+  // Antarctica (bottom)
+  ctx.fillRect(0, 450, canvas.width, 62);
+  
+  return new CanvasTexture(canvas);
+}
 const temperatureData = [
   { lat: 40.7, lng: -74.0, temp: 15, location: "New York" },
   { lat: 51.5, lng: -0.1, temp: 12, location: "London" },
@@ -186,6 +229,7 @@ interface EarthProps {
 
 function Earth({ showTemperature, showCurrents, onHover, onLeave }: EarthProps) {
   const meshRef = useRef<Mesh>(null);
+  const earthTexture = useMemo(() => createEarthTexture(), []);
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -197,10 +241,10 @@ function Earth({ showTemperature, showCurrents, onHover, onLeave }: EarthProps) 
     <group>
       <Sphere ref={meshRef} args={[1, 64, 64]}>
         <meshPhongMaterial
-          color="#1e40af"
-          transparent
-          opacity={0.8}
-          shininess={100}
+          map={earthTexture}
+          shininess={30}
+          specular="#ffffff"
+          transparent={false}
         />
       </Sphere>
       
