@@ -6,7 +6,7 @@ import MetricCard from "@/components/MetricCard";
 import ChartContainer from "@/components/ChartContainer";
 import AlertsPanel from "@/components/AlertsPanel";
 import ControlPanel from "@/components/ControlPanel";
-import Globe from "@/components/Globe";
+import CesiumGlobe from "@/components/CesiumGlobe";
 import { 
   Fish, 
   Activity, 
@@ -151,7 +151,7 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Globe />
+            <CesiumGlobe />
           </CardContent>
         </Card>
 
