@@ -144,7 +144,7 @@ export default function DataUpload() {
       </div>
 
       <Tabs defaultValue="file-upload" className="space-y-6">
-        <TabsList className="grid w-full max-w-md grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="file-upload">File Upload</TabsTrigger>
           <TabsTrigger value="manual-entry">Manual Entry</TabsTrigger>
         </TabsList>
