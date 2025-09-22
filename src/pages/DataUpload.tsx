@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Upload, 
-  FileVideo, 
-  FileImage, 
   FileText, 
   ArrowLeft,
   CheckCircle,
   AlertCircle,
-  Clock
+  Clock,
+  Download,
+  History
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
@@ -30,27 +30,27 @@ export default function DataUpload() {
   const [files, setFiles] = useState<UploadFile[]>([
     {
       id: '1',
-      name: 'tank_01_morning_feed.mp4',
-      size: 125000000,
-      type: 'video',
-      status: 'completed',
-      progress: 100
-    },
-    {
-      id: '2', 
-      name: 'species_count_data.csv',
+      name: 'fish_measurements_2024_01_15.csv',
       size: 2500000,
       type: 'data',
       status: 'completed',
       progress: 100
     },
     {
+      id: '2', 
+      name: 'biomass_data_tank_b.xlsx',
+      size: 1800000,
+      type: 'data',
+      status: 'completed',
+      progress: 100
+    },
+    {
       id: '3',
-      name: 'camera_02_maintenance.jpg',
-      size: 5000000,
-      type: 'image',
-      status: 'uploading',
-      progress: 67
+      name: 'manual_counts_tank_c.json',
+      size: 850000,
+      type: 'data',
+      status: 'error',
+      progress: 0
     }
   ]);
 
@@ -104,19 +104,15 @@ export default function DataUpload() {
   };
 
   const getFileIcon = (type: string) => {
-    switch (type) {
-      case 'video': return FileVideo;
-      case 'image': return FileImage;
-      default: return FileText;
-    }
+    return FileText;
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-success text-white';
-      case 'error': return 'bg-destructive text-white';
-      case 'uploading': return 'bg-warning text-white';
-      default: return 'bg-muted text-muted-foreground';
+      case 'completed': return 'bg-green-100 text-green-800 border-green-200';
+      case 'error': return 'bg-red-100 text-red-800 border-red-200';
+      case 'uploading': return 'bg-blue-100 text-blue-800 border-blue-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
@@ -131,147 +127,163 @@ export default function DataUpload() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate('/dashboard')}
-            className="gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Dashboard
-          </Button>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Data Upload</h1>
-            <p className="text-muted-foreground">Upload monitoring data and footage</p>
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold">Data Upload</h1>
+        <p className="text-muted-foreground">Import fish measurement data and biomass information</p>
+      </div>
+
+      <Tabs defaultValue="file-upload" className="space-y-6">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsTrigger value="file-upload">File Upload</TabsTrigger>
+          <TabsTrigger value="manual-entry">Manual Entry</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="file-upload" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Upload Data Files */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Upload className="h-5 w-5" />
+                  Upload Data Files
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-sm text-muted-foreground">
+                  Data Files
+                </div>
+                
+                <div
+                  className="border-2 border-dashed border-muted rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer"
+                  onDrop={handleDrop}
+                  onDragOver={(e) => e.preventDefault()}
+                  onClick={() => document.getElementById('file-input')?.click()}
+                >
+                  <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <div className="space-y-2">
+                    <p className="font-medium">Drop files here or click to browse</p>
+                    <p className="text-sm text-muted-foreground">
+                      Supports CSV, Excel, JSON files up to 50MB
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span>Choose files</span>
+                  <span>No file chosen</span>
+                </div>
+
+                <Button className="w-full" onClick={() => document.getElementById('file-input')?.click()}>
+                  Upload Files
+                </Button>
+
+                <input
+                  id="file-input"
+                  type="file"
+                  multiple
+                  accept=".csv,.xlsx,.xls,.json"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      const event = {
+                        preventDefault: () => {},
+                        dataTransfer: { files: e.target.files }
+                      } as React.DragEvent;
+                      handleDrop(event);
+                    }
+                  }}
+                />
+              </CardContent>
+            </Card>
+
+            {/* CSV Template */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  CSV Template
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Download our CSV template to ensure your data is formatted correctly for upload.
+                </p>
+
+                <div className="space-y-3">
+                  <div className="text-sm font-medium">Template includes:</div>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• <strong>timestamp</strong> - Measurement date and time</li>
+                    <li>• <strong>fish_id</strong> - Individual fish identifier (optional)</li>
+                    <li>• <strong>weight_kg</strong> - Fish weight in kilograms</li>
+                    <li>• <strong>length_cm</strong> - Fish length in centimeters</li>
+                    <li>• <strong>tank_id</strong> - Tank identifier (A, B, C, etc.)</li>
+                    <li>• <strong>species</strong> - Fish species (optional)</li>
+                    <li>• <strong>notes</strong> - Additional observations (optional)</li>
+                  </ul>
+                </div>
+
+                <Button variant="outline" className="w-full gap-2">
+                  <Download className="h-4 w-4" />
+                  Download CSV Template
+                </Button>
+
+                <div className="text-xs text-muted-foreground space-y-1">
+                  <div><strong>Required fields:</strong> timestamp, weight_kg, length_cm, tank_id</div>
+                  <div><strong>Date format:</strong> YYYY-MM-DD HH:MM:SS</div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </div>
-      </div>
+        </TabsContent>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Upload Zone */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Upload className="h-5 w-5" />
-              Upload Files
-            </CardTitle>
-            <CardDescription>
-              Drag and drop files or click to browse. Supports video, images, and data files.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div
-              className="border-2 border-dashed border-muted rounded-lg p-12 text-center hover:border-primary/50 transition-colors cursor-pointer"
-              onDrop={handleDrop}
-              onDragOver={(e) => e.preventDefault()}
-              onClick={() => document.getElementById('file-input')?.click()}
-            >
-              <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Drop files here</h3>
-              <p className="text-muted-foreground mb-4">
-                or click to browse your computer
-              </p>
-              <Button variant="outline" className="gap-2">
-                <Upload className="h-4 w-4" />
-                Choose Files
-              </Button>
-              <input
-                id="file-input"
-                type="file"
-                multiple
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target.files) {
-                    const event = {
-                      preventDefault: () => {},
-                      dataTransfer: { files: e.target.files }
-                    } as React.DragEvent;
-                    handleDrop(event);
-                  }
-                }}
-              />
-            </div>
-          </CardContent>
-        </Card>
+        <TabsContent value="manual-entry">
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Manual entry form coming soon...</p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
 
-        {/* Upload Statistics */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Upload Statistics</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Today's Uploads</span>
-                <span className="font-medium">24 files</span>
-              </div>
-              <Progress value={75} className="h-2" />
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Storage Used</span>
-                <span className="font-medium">2.1 GB / 10 GB</span>
-              </div>
-              <Progress value={21} className="h-2" />
-            </div>
-
-            <div className="pt-4 space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Video Files</span>
-                <Badge variant="secondary">8</Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Data Files</span>
-                <Badge variant="secondary">12</Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Images</span>
-                <Badge variant="secondary">4</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* File List */}
+      {/* Upload History */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Uploads</CardTitle>
-          <CardDescription>
-            Monitor upload progress and manage your files
-          </CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <History className="h-5 w-5" />
+            Upload History
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {files.map((file) => {
               const FileIcon = getFileIcon(file.type);
               return (
-                <div key={file.id} className="flex items-center gap-4 p-4 border rounded-lg">
-                  <FileIcon className="h-8 w-8 text-muted-foreground" />
-                  
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-medium">{file.name}</h4>
-                      <Badge className={getStatusColor(file.status)} variant="secondary">
-                        {file.status === 'completed' && <CheckCircle className="h-3 w-3 mr-1" />}
-                        {file.status === 'error' && <AlertCircle className="h-3 w-3 mr-1" />}
-                        {file.status === 'uploading' && <Clock className="h-3 w-3 mr-1" />}
-                        {file.status}
-                      </Badge>
+                <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <FileIcon className="h-6 w-6 text-muted-foreground" />
+                    <div>
+                      <div className="font-medium">{file.name}</div>
+                      <div className="text-sm text-muted-foreground">
+                        2024-01-15 14:32:15 • {file.id === '1' ? '1247 records' : file.id === '2' ? '856 records' : '0 records'} • Tank {file.id === '1' ? 'A' : file.id === '2' ? 'B' : 'C'}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-muted-foreground">
-                        {formatFileSize(file.size)}
-                      </span>
-                      {file.status === 'uploading' && (
-                        <div className="flex-1">
-                          <Progress value={file.progress} className="h-1" />
-                        </div>
-                      )}
-                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Badge 
+                      variant="outline" 
+                      className={getStatusColor(file.status)}
+                    >
+                      {file.status === 'completed' && <CheckCircle className="h-3 w-3 mr-1" />}
+                      {file.status === 'error' && <AlertCircle className="h-3 w-3 mr-1" />}
+                      {file.status === 'uploading' && <Clock className="h-3 w-3 mr-1" />}
+                      {file.status === 'completed' ? 'Completed' : file.status === 'error' ? 'Failed' : 'Processing'}
+                    </Badge>
+                    <Button variant="ghost" size="sm">
+                      <Download className="h-4 w-4 mr-1" />
+                      View Details
+                    </Button>
                   </div>
                 </div>
               );
