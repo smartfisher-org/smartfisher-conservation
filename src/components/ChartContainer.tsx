@@ -7,11 +7,16 @@ interface ChartContainerProps {
   type: 'line' | 'area' | 'tree';
   data: any[];
   description?: string;
+  kpi?: {
+    title: string;
+    value: string | number;
+    subtitle?: string;
+  };
 }
 
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accent))', 'hsl(var(--warning))'];
 
-export default function ChartContainer({ title, type, data, description }: ChartContainerProps) {
+export default function ChartContainer({ title, type, data, description, kpi }: ChartContainerProps) {
   const renderChart = () => {
     switch (type) {
       case 'line':
@@ -112,7 +117,18 @@ export default function ChartContainer({ title, type, data, description }: Chart
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        {renderChart()}
+        <div className="relative">
+          {renderChart()}
+          {kpi && (
+            <div className="absolute top-4 right-4 bg-card/90 backdrop-blur-sm border rounded-lg p-3 shadow-sm">
+              <div className="text-xs font-medium text-muted-foreground">{kpi.title}</div>
+              <div className="text-lg font-bold text-foreground">{kpi.value}</div>
+              {kpi.subtitle && (
+                <div className="text-xs text-muted-foreground">{kpi.subtitle}</div>
+              )}
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

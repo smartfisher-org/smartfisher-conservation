@@ -4,6 +4,7 @@ export interface DashboardData {
     totalFish: number;
     invasivePercent: number;
     cameraHealth: number;
+    shannonDiversity: number;
   };
   alerts: Array<{
     id: string;
@@ -30,6 +31,7 @@ export const mockDashboardData = async (): Promise<DashboardData> => {
       totalFish: 1423,
       invasivePercent: 8.3,
       cameraHealth: 94.2,
+      shannonDiversity: 3.5,
     },
     alerts: [
       {

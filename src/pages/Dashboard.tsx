@@ -131,16 +131,16 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ChartContainer
           title="Species Richness Trend"
           type="line"
           data={data?.charts.speciesRichness || []}
-        />
-        <ChartContainer
-          title="Shannon Diversity Index"
-          type="line"
-          data={data?.charts.shannonIndex || []}
+          kpi={{
+            title: "Shannon Diversity Index",
+            value: data?.metrics.shannonDiversity || 3.5,
+            subtitle: "Current biodiversity"
+          }}
         />
         <ChartContainer
           title="Invasive Species Growth"
