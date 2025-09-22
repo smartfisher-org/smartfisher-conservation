@@ -4,6 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { 
   Upload, 
   FileText, 
@@ -12,9 +18,13 @@ import {
   AlertCircle,
   Clock,
   Download,
-  History
+  History,
+  CalendarIcon,
+  Database
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface UploadFile {
   id: string;
@@ -27,6 +37,7 @@ interface UploadFile {
 
 export default function DataUpload() {
   const navigate = useNavigate();
+  const [date, setDate] = useState<Date>();
   const [files, setFiles] = useState<UploadFile[]>([
     {
       id: '1',
@@ -238,10 +249,121 @@ export default function DataUpload() {
 
         <TabsContent value="manual-entry">
           <Card>
-            <CardContent className="p-6">
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">Manual entry form coming soon...</p>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Database className="h-5 w-5" />
+                Manual Data Entry
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left Column */}
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="location">Location Name</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select location" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border shadow-md z-50">
+                        <SelectItem value="north-bay">North Bay</SelectItem>
+                        <SelectItem value="south-inlet">South Inlet</SelectItem>
+                        <SelectItem value="deep-water">Deep Water Zone</SelectItem>
+                        <SelectItem value="coastal-reef">Coastal Reef</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="fish-count">Fish Count</Label>
+                    <Input 
+                      id="fish-count"
+                      type="number" 
+                      placeholder="Enter total fish count"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="species">Species Name</Label>
+                    <Input 
+                      id="species"
+                      type="text" 
+                      placeholder="e.g., Atlantic Salmon"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="invasive">Invasive Species</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border shadow-md z-50">
+                        <SelectItem value="yes">Yes - Invasive</SelectItem>
+                        <SelectItem value="no">No - Native/Non-invasive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-4">
+                  <div>
+                    <Label>Measurement Date</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {date ? format(date, "dd/MM/yyyy, --:--") : "dd/mm/yyyy, --:--"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 bg-background border shadow-md z-50" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          initialFocus
+                          className={cn("p-3 pointer-events-auto")}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="data-source">Data Source</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select source" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border shadow-md z-50">
+                        <SelectItem value="field-observation">Field Observation</SelectItem>
+                        <SelectItem value="camera-trap">Camera Trap</SelectItem>
+                        <SelectItem value="net-sampling">Net Sampling</SelectItem>
+                        <SelectItem value="sonar-detection">Sonar Detection</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="notes">Notes</Label>
+                    <Textarea 
+                      id="notes"
+                      placeholder="Additional observations or comments..."
+                      className="min-h-[100px]"
+                    />
+                  </div>
+                </div>
               </div>
+
+              <Button className="w-full" size="lg">
+                Save Measurement
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
