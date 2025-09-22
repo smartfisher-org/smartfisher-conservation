@@ -49,10 +49,10 @@ export default function ControlPanel() {
 
   return (
     <Card>
-      <CardContent className="pt-6">
-        <div className="flex items-center justify-between gap-6">
-          {/* Left side - Filter controls */}
-          <div className="flex items-center gap-6 flex-1">
+      <CardContent className="pt-6 space-y-4">
+        {/* First row - Filter controls and See results */}
+        <div className="flex items-end justify-between gap-6">
+          <div className="flex items-end gap-6 flex-1">
             {/* Location */}
             <div className="space-y-2 min-w-[200px]">
               <label className="text-sm font-medium text-foreground">
@@ -121,17 +121,17 @@ export default function ControlPanel() {
                 </SelectContent>
               </Select>
             </div>
-
-            {/* See results button */}
-            <div className="pt-6">
-              <Button variant="link" className="text-foreground font-medium">
-                See results
-              </Button>
-            </div>
           </div>
 
-          {/* Right side - Action buttons */}
-          <div className="flex items-center gap-2 pt-6">
+          {/* See results button */}
+          <Button variant="link" className="text-foreground font-medium">
+            See results
+          </Button>
+        </div>
+
+        {/* Second row - Action buttons */}
+        <div className="flex justify-end">
+          <div className="flex items-center gap-2">
             <Button variant="outline" onClick={handleRefresh} className="gap-2">
               <RefreshCw className="h-4 w-4" />
               Refresh
