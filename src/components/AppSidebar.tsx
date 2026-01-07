@@ -43,11 +43,11 @@ export default function AppSidebar() {
           <div className="w-32 h-32 mb-3">
             <img 
               src={smartfisherLogo} 
-              alt="SmartFISHER Logo" 
+              alt="Hydrotwin Vision Logo" 
               className="w-full h-full object-contain"
             />
           </div>
-          <h1 className="text-lg font-bold text-foreground">SmartFISHER</h1>
+          <h1 className="text-lg font-bold text-foreground">Hydrotwin Vision</h1>
         </div>
 
         {/* Main Navigation Menu */}

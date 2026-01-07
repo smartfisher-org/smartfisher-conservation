@@ -31,7 +31,7 @@ export default function Settings() {
   const [profile, setProfile] = useState({
     name: 'John Doe',
     email: 'john@example.com',
-    company: 'SmartFISHER'
+    company: 'Hydrotwin Vision'
   });
 
   const [notifications, setNotifications] = useState({
